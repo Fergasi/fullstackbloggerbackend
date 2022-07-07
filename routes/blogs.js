@@ -10,7 +10,7 @@ router.get("/all-blogs", async function (req, res, next) {
   try {
     const collection = await blogsDB().collection("blogs50");
     const blogs50 = await collection.find({}).toArray();
-    res.json(blogs50);
+    res.send({ message: blogs50 });
   } catch (e) {
     res.status(500).send("Error fetching posts:" + e);
   }
