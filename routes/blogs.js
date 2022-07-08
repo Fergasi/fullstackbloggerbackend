@@ -37,4 +37,32 @@ router.get("/all-blogs", async function (req, res, next) {
   }
 });
 
+router.post("/blog-submit", async function (req, res, next) {
+  try {
+    const collection = await blogsDB().collection("blogs50");
+    const sortedBlogArray = await collection.find({}).sort({ id: 1 }).toArray();
+    const lastBlog = sortedBlogArray[sortedBlogArray.length - 1];
+
+    const title = req.body.title;
+    const text = req.body.text;
+    const author = req.body.author;
+    const category = req.body.category;
+
+    const blogPost = {
+      title: title,
+      text: text,
+      author: author,
+      category: category,
+      createdAt: new Date(),
+      id: Number(lastBlog.id + 1),
+      lastModified: new Date(),
+    };
+
+    await collection.insertOne(blogPost);
+    res.status(200).send("Post has been successfully submitted");
+  } catch (e) {
+    res.status(500).send("Error fetching posts:" + e);
+  }
+});
+
 module.exports = router;
