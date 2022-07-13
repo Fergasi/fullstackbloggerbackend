@@ -8,7 +8,8 @@ router.get("/blog-list", async function (req, res, next) {
     const collection = await blogsDB().collection("blogs50");
     const blogs = await collection
       .find({})
-      .projection({
+      .sort({ id: -1 })
+      .project({
         title: 1,
         author: 1,
         createdAt: 1,
@@ -17,9 +18,7 @@ router.get("/blog-list", async function (req, res, next) {
       })
       .toArray();
 
-    res
-      .status(200)
-      .json({ message: "Successfully completed" + e, success: true });
+    res.status(200).json({ message: blogs, success: true });
   } catch (e) {
     res
       .status(500)
@@ -84,13 +83,14 @@ router.put("/edit-blog", async function (req, res) {
 router.delete("/delete-blog/:blogId", async (req, res) => {
   try {
     const blogId = Number(req.params.blogId);
-    const collection = await blogsDB().collection("posts50");
+    const collection = await blogsDB().collection("blogs50");
     const blogToDelete = await collection.deleteOne({ id: blogId });
-
-    if (blogToDelete.deleteCount === 1) {
+    console.log(blogToDelete);
+    if (blogToDelete.deletedCount === 1) {
       res
         .status(200)
         .json({ message: "Blog Successfully Deleted", success: true });
+      console.log("testing delete");
     } else {
       res.status(204).json({ message: "Unsuccessful", success: false });
     }
@@ -98,3 +98,5 @@ router.delete("/delete-blog/:blogId", async (req, res) => {
     res.status(500).json({ message: "Error " + error, success: false });
   }
 });
+
+module.exports = router;
