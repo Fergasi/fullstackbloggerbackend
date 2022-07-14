@@ -83,4 +83,24 @@ router.post("/blog-submit", async function (req, res, next) {
   }
 });
 
+router.get("/single-blog/:blogId", async function (req, res) {
+  try {
+    const blogId = Number(req.params.blogId);
+
+    const collection = await blogsDB().collection("blogs50");
+    const foundBlog = await collection.findOne({ id: blogId });
+
+    if (!foundBlog) {
+      const noBlog = {
+        text: "* This Blog does not exist...",
+      };
+      res.status(204).json(noBlog);
+    } else {
+      res.status(200).json(foundBlog);
+    }
+  } catch (e) {
+    res.status(500).json({ message: "* Error fetching posts" + e });
+  }
+});
+
 module.exports = router;

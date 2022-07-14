@@ -29,9 +29,9 @@ router.get("/blog-list", async function (req, res, next) {
 router.put("/edit-blog", async function (req, res) {
   try {
     const collection = await blogsDB().collection("blogs50");
-    const blogId = Number(req.params.id);
+    const blogId = Number(req.body.id);
     const originalBlog = await collection.findOne({ id: blogId });
-
+    console.log(originalBlog);
     if (!originalBlog) {
       res.status(204).json({
         message:
@@ -54,13 +54,13 @@ router.put("/edit-blog", async function (req, res) {
       const date = new Date();
       const updateBlog = { ...newPostBlog, lastModified: date };
 
-      updateBlog = {
-        lastModified: new Date(),
-        title: blogTitle,
-        text: blogText,
-        author: blogAuthor,
-        category: blogCategory,
-      };
+      //   updateBlog = {
+      //     lastModified: new Date(),
+      //     title: newPostBlog.title,
+      //     text: newPostBlog.text,
+      //     author: newPostBlog.author,
+      //     category: newPostBlog.category,
+      //   };
       await collection.updateOne(
         {
           id: newPostBlog.id,
