@@ -40,6 +40,7 @@ router.put("/edit-blog", async function (req, res) {
           " does not exist... Please enter a valid Blog ID",
         success: false,
       });
+      return;
     } else {
       const updatedBlogIsValid = serverCheckBlogIsValid(req.body);
 

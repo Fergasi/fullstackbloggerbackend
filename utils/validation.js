@@ -1,7 +1,7 @@
 const serverCheckBlogIsValid = (reqBody) => {
   if (
-    !reqBody.hasOwnProperty("title") &&
-    !typeof reqBody.title === String &&
+    !reqBody.hasOwnProperty("title") ||
+    !typeof reqBody.title === "string" ||
     reqBody.title < 1
   ) {
     return false;
@@ -9,7 +9,7 @@ const serverCheckBlogIsValid = (reqBody) => {
 
   if (
     !reqBody.hasOwnProperty("text") ||
-    !typeof reqBody.text === String ||
+    !typeof reqBody.text === "string" ||
     reqBody.text < 1
   ) {
     return false;
@@ -17,7 +17,7 @@ const serverCheckBlogIsValid = (reqBody) => {
 
   if (
     !reqBody.hasOwnProperty("author") ||
-    !typeof reqBody.author === String ||
+    !typeof reqBody.author === "string" ||
     reqBody.author < 1
   ) {
     return false;
@@ -25,7 +25,7 @@ const serverCheckBlogIsValid = (reqBody) => {
 
   if (
     !reqBody.hasOwnProperty("category") ||
-    !typeof reqBody.category === String ||
+    !typeof reqBody.category === "string" ||
     reqBody.category < 1
   ) {
     return false;
